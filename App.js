@@ -26,7 +26,7 @@ const App = () => {
       setactiveMultiplier(m);
       setSpeedInSec(m);
       lastActiveSpeed.current = m;
-      setFontSize(showSeconds ? CLOCK_SIZE / 11.6 : CLOCK_SIZE / 8.85);
+      setFontSize(showSeconds ? CLOCK_SIZE / 12.5 : CLOCK_SIZE / 8.85);
    }, [showSeconds]);
 
    const [fontsLoaded] = useFonts({
@@ -113,6 +113,7 @@ const App = () => {
                   reelBorderWidth={1}
                   speedInSecs={speedInSec}
                   restartRequested={restartRequested}
+                  distanceFactor={1.5}
                />
             </>
          ) : null}

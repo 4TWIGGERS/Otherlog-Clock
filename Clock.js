@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Platform, StyleSheet, View } from 'react-native';
 import Animated, {
    Easing,
    useAnimatedStyle,
@@ -68,12 +68,14 @@ const Reel = ({
    currTime,
    reelBorderWidth,
    minutesOnly,
+   distanceFactor = 1.5,
 }) => {
    const isReversed = reelData.isReversed;
    const extraOffset = reelData.offset * boxSize;
    const reelSize = clockSize - 2 * boxSize * reelIndex - extraOffset;
    const boxOffset = reelSize / 2 - boxSize / 2 - reelBorderWidth;
-   const reelLength = 2 * Math.round((2 * Math.PI * ((reelSize - 2 * boxSize) / 2)) / boxSize / 2);
+   const reelCircumference = 2 * Math.PI * ((reelSize - 2 * boxSize) / 2);
+   const reelLength = Math.round(reelCircumference / boxSize / 2) * distanceFactor;
    const boxAngle = 360 / reelLength;
 
    const angle = useDerivedValue(() => {
@@ -136,6 +138,7 @@ const Clock = ({
    fontSize = 30,
    speedInSecs = 1,
    restartRequested,
+   distanceFactor = 1.5,
 }) => {
    const reelData = getClockData(minutesOnly);
    const boxSize = fontSize * 0.7;
@@ -178,6 +181,7 @@ const Clock = ({
                      extraOffset={extraOffset}
                      reelBorderWidth={reelBorderWidth}
                      minutesOnly={minutesOnly}
+                     distanceFactor={distanceFactor}
                   />
                   {shouldRenderGapReel && (
                      <EmptyReel
@@ -220,7 +224,7 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
    },
    textBox: {
-      position: 'absolute',
+      position: Platform.OS === 'android' ? 'absolute' : 'relative',
       fontFamily: 'Gill-Sans-Medium',
       color: '#271C18',
    },
