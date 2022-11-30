@@ -1,10 +1,39 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Svg, Defs, Circle, Rect, Mask } from 'react-native-svg';
 
-const ClockMask = ({ size, areaWidth, areaHeight }) => {
+const Grid = ({ size, strokeWidth, strokeGap, color }) => {
+   const strokeFullWidth = strokeWidth + strokeGap;
    return (
-      <Svg width={size} height={size} style={styles.absolute}>
+      <View style={[styles.gridContainer, { width: size, height: size, borderRadius: size / 2 }]}>
+         {[...Array(Math.round(size / strokeFullWidth)).keys()].map((_, index) => {
+            return (
+               <View
+                  key={index}
+                  style={{
+                     position: 'absolute',
+                     height: size,
+                     width: strokeWidth,
+                     backgroundColor: color,
+                     left: strokeFullWidth * index,
+                  }}
+               />
+            );
+         })}
+      </View>
+   );
+};
+
+const ClockMask = ({
+   size = 1,
+   areaWidth = 1,
+   areaHeight = 1,
+   strokeGap = 5,
+   strokeWidth = 1,
+   color,
+}) => {
+   return (
+      <Svg width={size} height={size} style={styles.container}>
          <Defs>
             <Mask id='m' x='0' y='0' height='100%' width='100%'>
                <Circle r='50%' cx='50%' cy='50%' fill='#fff' />
@@ -18,14 +47,38 @@ const ClockMask = ({ size, areaWidth, areaHeight }) => {
                />
             </Mask>
          </Defs>
-         <Circle r='50%' cx='50%' cy='50%' mask='url(#m)' fill-opacity='0' fill='#95393846' />
+         <Grid size={size} strokeWidth={strokeWidth} strokeGap={strokeGap} color={color} />
+         <Rect
+            x={size / 2}
+            y={size / 2 - areaHeight / 2}
+            rx={areaHeight / 2}
+            width={areaWidth}
+            height={areaHeight}
+            fill='transparent'
+            stroke={color}
+            strokeWidth={strokeWidth}
+         />
+         <Circle
+            r='50%'
+            cx='50%'
+            cy='50%'
+            mask='url(#m)'
+            fillOpacity={0.25}
+            fill={color}
+            stroke={color}
+            strokeWidth={3 * strokeWidth}
+         />
       </Svg>
    );
 };
 
 const styles = StyleSheet.create({
-   absolute: {
+   container: {
       position: 'absolute',
+      overflow: 'hidden',
+   },
+   gridContainer: {
+      overflow: 'hidden',
    },
 });
 

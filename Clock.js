@@ -68,15 +68,15 @@ const Reel = ({
    currTime,
    reelBorderWidth,
    minutesOnly,
-   distanceFactor = 1.5,
 }) => {
    const isReversed = reelData.isReversed;
    const extraOffset = reelData.offset * boxSize;
    const reelSize = clockSize - 2 * boxSize * reelIndex - extraOffset;
    const boxOffset = reelSize / 2 - boxSize / 2 - reelBorderWidth;
    const reelCircumference = 2 * Math.PI * ((reelSize - 2 * boxSize) / 2);
-   const reelLength = Math.round(reelCircumference / boxSize / 2) * distanceFactor;
-   const boxAngle = 360 / reelLength;
+   const maxBoxCount = Math.round(reelCircumference / boxSize);
+   const reelBoxCount = reelData.data.length;
+   const boxAngle = 360 / ((maxBoxCount + reelBoxCount) / 2);
 
    const angle = useDerivedValue(() => {
       let angle = currTime.value[reelIndex + (minutesOnly ? 2 : 0)] * boxAngle;
@@ -138,7 +138,7 @@ const Clock = ({
    fontSize = 30,
    speedInSecs = 1,
    restartRequested,
-   distanceFactor = 1.5,
+   color = '#fff',
 }) => {
    const reelData = getClockData(minutesOnly);
    const boxSize = fontSize * 0.7;
@@ -181,7 +181,6 @@ const Clock = ({
                      extraOffset={extraOffset}
                      reelBorderWidth={reelBorderWidth}
                      minutesOnly={minutesOnly}
-                     distanceFactor={distanceFactor}
                   />
                   {shouldRenderGapReel && (
                      <EmptyReel
@@ -199,6 +198,9 @@ const Clock = ({
             size={clockSize}
             areaWidth={clockSize / 2 - (boxSize * 2) / 5}
             areaHeight={boxSize * 1.2}
+            strokeGap={clockSize / 48}
+            strokeWidth={3}
+            color={color}
          />
       </View>
    );
@@ -207,16 +209,13 @@ const Clock = ({
 const styles = StyleSheet.create({
    wrapper: {
       position: 'absolute',
+      top: 230,
       alignItems: 'center',
       justifyContent: 'center',
-      borderWidth: 4,
-      borderColor: '#953938',
-      backgroundColor: '#CFC8C3',
-      top: 230,
    },
    reelWrapper: {
       position: 'absolute',
-      borderColor: '#817A75',
+      borderColor: '#463C38',
    },
    boxWrapper: {
       position: 'absolute',
@@ -226,7 +225,7 @@ const styles = StyleSheet.create({
    textBox: {
       position: Platform.OS === 'android' ? 'absolute' : 'relative',
       fontFamily: 'Gill-Sans-Medium',
-      color: '#271C18',
+      color: '#242423',
    },
 });
 

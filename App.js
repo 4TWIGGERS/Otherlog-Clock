@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View, Dimensions } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View, Dimensions, Platform } from 'react-native';
 import { useFonts } from 'expo-font';
 
 import Clock from './Clock';
@@ -9,6 +9,7 @@ const SCREEN_WIDTH = Dimensions.get('screen').width;
 const CLOCK_SIZE = SCREEN_WIDTH - 20;
 const DEFAULT_SEC_SPEED = 1;
 const DEFAULT_MIN_SPEED = 60;
+const PRIMARY_COLOR = '#A9312A';
 
 const App = () => {
    const [showOptions, setShowOptions] = useState(true);
@@ -71,14 +72,14 @@ const App = () => {
                            style={[
                               styles.button,
                               {
-                                 backgroundColor: showSeconds ? '#953938' : 'transparent',
+                                 backgroundColor: showSeconds ? PRIMARY_COLOR : 'transparent',
                               },
                            ]}>
                            <Text
                               style={[
                                  styles.label,
                                  {
-                                    color: showSeconds ? '#fff' : '#953938',
+                                    color: showSeconds ? '#fff' : PRIMARY_COLOR,
                                  },
                               ]}>
                               include seconds
@@ -113,7 +114,7 @@ const App = () => {
                   reelBorderWidth={1}
                   speedInSecs={speedInSec}
                   restartRequested={restartRequested}
-                  distanceFactor={1.5}
+                  color={PRIMARY_COLOR}
                />
             </>
          ) : null}
@@ -126,7 +127,7 @@ const styles = StyleSheet.create({
       flex: 1,
       alignItems: 'center',
       justifyContent: 'center',
-      backgroundColor: '#CFC8C3',
+      backgroundColor: '#DBDBD9',
       paddingHorizontal: (SCREEN_WIDTH - CLOCK_SIZE) / 2,
    },
    options: {
@@ -148,7 +149,7 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
       borderWidth: 1,
       borderRadius: 5,
-      borderColor: '#953938',
+      borderColor: PRIMARY_COLOR,
    },
    gap: {
       marginHorizontal: 10,
@@ -156,13 +157,27 @@ const styles = StyleSheet.create({
    label: {
       fontFamily: 'Gill-Sans-Medium',
       fontSize: 15,
-      color: '#953938',
+      color: PRIMARY_COLOR,
+      textAlignVertical: 'center',
+      ...Platform.select({
+         ios: {
+            lineHeight: 15, // as same as height
+         },
+         android: {},
+      }),
       textTransform: 'uppercase',
    },
    speed: {
       paddingHorizontal: 10,
       fontSize: 20,
       fontWeight: 'bold',
+      textAlignVertical: 'center',
+      ...Platform.select({
+         ios: {
+            lineHeight: 20, // as same as height
+         },
+         android: {},
+      }),
    },
 });
 
