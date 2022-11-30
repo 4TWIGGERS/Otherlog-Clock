@@ -81,7 +81,7 @@ const Reel = ({
    const angle = useDerivedValue(() => {
       let angle = currTime.value[reelIndex + (minutesOnly ? 2 : 0)] * boxAngle;
       angle = isReversed ? angle : -angle;
-      return withSpring(angle);
+      return withSpring(angle, { damping: 18, stiffness: 110 });
    });
 
    const reelWrapperStyle = useAnimatedStyle(() => {
