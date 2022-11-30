@@ -197,7 +197,7 @@ const Clock = ({
          <ClockMask
             size={clockSize}
             areaWidth={clockSize / 2 - (boxSize * 2) / 5}
-            areaHeight={boxSize * 1.2}
+            areaHeight={boxSize * 1.4}
             strokeGap={clockSize / 48}
             strokeWidth={3}
             color={color}
