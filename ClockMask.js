@@ -1,26 +1,26 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Svg, Defs, Circle, Rect, Mask } from 'react-native-svg';
+import { Svg, Defs, Circle, Rect, Mask, Line, G } from 'react-native-svg';
 
-const Grid = ({ size, strokeWidth, strokeGap, color }) => {
+const Grid = ({ size, strokeWidth, strokeGap, color, mask }) => {
    const strokeFullWidth = strokeWidth + strokeGap;
+
    return (
-      <View style={[styles.gridContainer, { width: size, height: size, borderRadius: size / 2 }]}>
+      <G mask={mask}>
          {[...Array(Math.round(size / strokeFullWidth)).keys()].map((_, index) => {
             return (
-               <View
-                  key={index}
-                  style={{
-                     position: 'absolute',
-                     height: size,
-                     width: strokeWidth,
-                     backgroundColor: color,
-                     left: strokeFullWidth * index,
-                  }}
+               <Line
+                  key={index.toString()}
+                  x1={strokeFullWidth * index}
+                  x2={strokeFullWidth * index}
+                  strokeWidth={2}
+                  y1='0'
+                  y2='100%'
+                  stroke={color}
                />
             );
          })}
-      </View>
+      </G>
    );
 };
 
@@ -47,7 +47,8 @@ const ClockMask = ({
                />
             </Mask>
          </Defs>
-         <Grid size={size} strokeWidth={strokeWidth} strokeGap={strokeGap} color={color} />
+         <Grid size={size} strokeWidth={strokeWidth} strokeGap={strokeGap} color={color} mask='url(#m)'/>
+
          <Rect
             x={size / 2}
             y={size / 2 - areaHeight / 2}
