@@ -44,7 +44,7 @@ const EmptyReel = ({ clockSize, boxSize, reelIndex, reelBorderWidth, extraOffset
    const reelSize = clockSize - 2 * boxSize * reelIndex - extraOffset;
 
    return (
-      <Animated.View
+      <View
          style={[
             styles.reelWrapper,
             {
@@ -198,8 +198,8 @@ const Clock = ({
             size={clockSize}
             areaWidth={clockSize / 2 - (boxSize * 2) / 5}
             areaHeight={boxSize * 1.4}
-            strokeGap={clockSize / 48}
-            strokeWidth={3}
+            strokeGap={clockSize / 90}
+            strokeWidth={2.5}
             color={color}
          />
       </View>

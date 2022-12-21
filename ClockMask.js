@@ -1,6 +1,7 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { Svg, Defs, Circle, Rect, Mask, Line, G } from 'react-native-svg';
+import { Shadow } from 'react-native-shadow-2';
 
 const Grid = ({ size, strokeWidth, strokeGap, color, mask }) => {
    const strokeFullWidth = strokeWidth + strokeGap;
@@ -13,7 +14,7 @@ const Grid = ({ size, strokeWidth, strokeGap, color, mask }) => {
                   key={index.toString()}
                   x1={strokeFullWidth * index}
                   x2={strokeFullWidth * index}
-                  strokeWidth={2}
+                  strokeWidth={strokeWidth}
                   y1='0'
                   y2='100%'
                   stroke={color}
@@ -32,6 +33,9 @@ const ClockMask = ({
    strokeWidth = 1,
    color,
 }) => {
+   const maskShadow = 2.5 * strokeWidth;
+   const circleShadow = 5 * strokeWidth;
+   const circleShadowSize = size - 2 * circleShadow;
    return (
       <Svg width={size} height={size} style={styles.container}>
          <Defs>
@@ -47,8 +51,25 @@ const ClockMask = ({
                />
             </Mask>
          </Defs>
-         <Grid size={size} strokeWidth={strokeWidth} strokeGap={strokeGap} color={color} mask='url(#m)'/>
-
+         <Grid
+            size={size}
+            strokeWidth={strokeWidth}
+            strokeGap={strokeGap}
+            color={color}
+            mask='url(#m)'
+         />
+         <Shadow
+            distance={maskShadow}
+            style={{
+               position: 'absolute',
+               width: areaWidth - 2 * maskShadow,
+               height: areaHeight - 2 * maskShadow,
+               borderRadius: areaHeight / 2,
+            }}
+            offset={[size / 2 + maskShadow, size / 2 - areaHeight / 2 + maskShadow]}
+            startColor={'#0000'}
+            endColor={`${color}80`}
+         />
          <Rect
             x={size / 2}
             y={size / 2 - areaHeight / 2}
@@ -59,6 +80,18 @@ const ClockMask = ({
             stroke={color}
             strokeWidth={strokeWidth}
          />
+         <Shadow
+            distance={circleShadow}
+            style={{
+               position: 'absolute',
+               width: circleShadowSize,
+               height: circleShadowSize,
+               borderRadius: size,
+            }}
+            offset={[circleShadow, circleShadow]}
+            startColor={'#0000'}
+            endColor={`${color}cc`}
+         />
          <Circle
             r='50%'
             cx='50%'
@@ -67,7 +100,7 @@ const ClockMask = ({
             fillOpacity={0.25}
             fill={color}
             stroke={color}
-            strokeWidth={3 * strokeWidth}
+            strokeWidth={3.5 * strokeWidth}
          />
       </Svg>
    );
@@ -76,9 +109,6 @@ const ClockMask = ({
 const styles = StyleSheet.create({
    container: {
       position: 'absolute',
-      overflow: 'hidden',
-   },
-   gridContainer: {
       overflow: 'hidden',
    },
 });
