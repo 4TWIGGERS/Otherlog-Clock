@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Svg, Defs, Circle, Rect, Mask, Line, G } from 'react-native-svg';
 import { Shadow } from 'react-native-shadow-2';
 
@@ -36,6 +36,7 @@ const ClockMask = ({
    const maskShadow = 2.5 * strokeWidth;
    const circleShadow = 5 * strokeWidth;
    const circleShadowSize = size - 2 * circleShadow;
+
    return (
       <Svg width={size} height={size} style={styles.container}>
          <Defs>
@@ -58,18 +59,23 @@ const ClockMask = ({
             color={color}
             mask='url(#m)'
          />
-         <Shadow
-            distance={maskShadow}
+         <View
             style={{
                position: 'absolute',
-               width: areaWidth - 2 * maskShadow,
-               height: areaHeight - 2 * maskShadow,
-               borderRadius: areaHeight / 2,
-            }}
-            offset={[size / 2 + maskShadow, size / 2 - areaHeight / 2 + maskShadow]}
-            startColor={'#0000'}
-            endColor={`${color}80`}
-         />
+               top: size / 2 - areaHeight / 2 + maskShadow,
+               left: size / 2 + maskShadow,
+            }}>
+            <Shadow
+               distance={maskShadow}
+               style={{
+                  width: areaWidth - 2 * maskShadow,
+                  height: areaHeight - 2 * maskShadow,
+                  borderRadius: areaHeight / 2,
+               }}
+               startColor={'#0000'}
+               endColor={`${color}80`}
+            />
+         </View>
          <Rect
             x={size / 2}
             y={size / 2 - areaHeight / 2}
@@ -80,18 +86,23 @@ const ClockMask = ({
             stroke={color}
             strokeWidth={strokeWidth}
          />
-         <Shadow
-            distance={circleShadow}
+         <View
             style={{
                position: 'absolute',
-               width: circleShadowSize,
-               height: circleShadowSize,
-               borderRadius: size,
-            }}
-            offset={[circleShadow, circleShadow]}
-            startColor={'#0000'}
-            endColor={`${color}cc`}
-         />
+               top: circleShadow,
+               left: circleShadow,
+            }}>
+            <Shadow
+               distance={circleShadow}
+               style={{
+                  width: circleShadowSize,
+                  height: circleShadowSize,
+                  borderRadius: size,
+               }}
+               startColor={'#0000'}
+               endColor={`${color}cc`}
+            />
+         </View>
          <Circle
             r='50%'
             cx='50%'
